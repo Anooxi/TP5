@@ -1,11 +1,11 @@
 import repositories.Shop;
 import models.*;
 import utilities.Utility;
-
 import java.util.Date;
 import java.util.logging.*;
 
 public class Main {
+
     public static void main(String[] args) throws Exception {
         // Initialisation
         Shop shop = Shop.getInstance();
