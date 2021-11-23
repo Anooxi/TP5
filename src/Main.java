@@ -39,7 +39,9 @@ public class Main {
 
         LOGGER.info("Creating Menu");
         Menu menu = new Menu(new User("Test",18,"test@email.com","salut"));
-        menu.menu();
+        while (menu.getFlag()){
+            menu.menu();
+        }
         LOGGER.info("End of Program");
     }
 

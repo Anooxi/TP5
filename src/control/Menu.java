@@ -18,6 +18,10 @@ public class Menu {
     private static final Logger logger = Logger.getLogger(Menu.class.getName());
     private final User user;
     private Shop shop = Shop.getInstance();
+    private Scanner scanner;
+    private boolean flag = true;
+
+    public boolean getFlag(){return flag;}
 
     public Menu(User user){
         Handler fh = null;
@@ -31,7 +35,7 @@ public class Menu {
         logger.addHandler(fhGeneral);
         logger.setLevel(Level.FINEST);
         logger.setUseParentHandlers(false);
-
+        this.scanner  = new Scanner(System.in);
         this.user = user;
 
         logger.log(Level.INFO,"Menu created",this);
@@ -45,36 +49,30 @@ public class Menu {
                 "4. deleteProduct\n" +
                 "5. updateProduct\n" +
                 "6. quit";
-        System.out.println(string);
-        Scanner sc = new Scanner(System.in);
-        int i = sc.nextInt();
+        System.out.println(string);;
+        int i = scanner.nextInt();
         switch (i) {
             case 1 -> {
                 displayProduct();
-                menu();
             }
             case 2 -> {
                 fetchProduct();
-                menu();
             }
             case 3 -> {
                 addProduct();
-                menu();
             }
             case 4 -> {
                 deleteProduct();
-                menu();
             }
             case 5 -> {
                 updateProduct();
-                menu();
             }
             case 6 -> {
                 // Does nothing so it leaves
+                this.flag = false;
             }
             default -> {
                 System.out.println("Wrong number");
-                menu();
             }
         }
     }
@@ -88,10 +86,10 @@ public class Menu {
         logger.info("Fetching a product");
 
         int i = -1;
-        try (Scanner sc = new Scanner(System.in)) {
+        try {
             Utility.separator();
             System.out.println("Enter an id :");
-            i = sc.nextInt();
+            i = scanner.nextInt();
         } catch (Exception ex){
             logger.log(Level.SEVERE, "fetchProduct Error : ", ex);
             ex.printStackTrace();
@@ -109,12 +107,12 @@ public class Menu {
         String name = null;
         Double price = null;
 
-        try (Scanner sc = new Scanner(System.in)) {
+        try  {
             Utility.separator();
             System.out.println("Enter a name :");
-            name = sc.next();
+            name = scanner.next();
             System.out.println("Enter a price :");
-            price = sc.nextDouble();
+            price = scanner.nextDouble();
         } catch (Exception ex){
             logger.log(Level.SEVERE, "addProduct Error : ", ex);
             ex.printStackTrace();
@@ -132,17 +130,17 @@ public class Menu {
         logger.info("Deleting a product");
 
         int i = -1;
-        try (Scanner sc = new Scanner(System.in)){
+        try {
             Utility.separator();
             System.out.println("Enter an id :");
-            i = sc.nextInt();
+            i = scanner.nextInt();
         } catch (Exception ex){
             logger.log(Level.SEVERE, "deleteProduct Error : ", ex);
             ex.printStackTrace();
             return;
         }
         Product p = shop.deleteProduct(i);
-        System.out.print("Product deleted");
+        System.out.println("Product deleted");
 
         logger.info("Product deleting ended with : id = " + i + ", product = " + p);
     }
@@ -153,14 +151,14 @@ public class Menu {
         int i = -1;
         String name = "";
         Double price = 0.0;
-        try (Scanner sc = new Scanner(System.in)) {
+        try {
             Utility.separator();
             System.out.println("Enter the id of the product you want modified :");
-            i = sc.nextInt();
+            i = scanner.nextInt();
             System.out.println("Enter a name :");
-            name = sc.next();
+            name = scanner.next();
             System.out.println("Enter a price :");
-            price = sc.nextDouble();
+            price = scanner.nextDouble();
         } catch (Exception ex){
             logger.log(Level.SEVERE, "updateProduct Error : ", ex);
             ex.printStackTrace();
