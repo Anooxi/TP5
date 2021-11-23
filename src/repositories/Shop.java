@@ -59,7 +59,6 @@ public class Shop {
     }
 
     /**
-     * TODO : Standard Logging
      * @param newProduct new Product to be added
      * @throws Exception Throws an exception if the newProduct already exists
      */
@@ -81,7 +80,7 @@ public class Shop {
      * @param deleteId id of the product to be deleted
      * @throws Exception throws an exception if the product does not exist
      */
-    public void deleteProduct(int deleteId) throws Exception {
+    public Product deleteProduct(int deleteId) throws Exception {
         Optional<Product> product = products.stream()
                 .filter(p -> p.getId() == deleteId)
                 .findAny();
@@ -90,13 +89,14 @@ public class Shop {
             logger.log(Level.SEVERE, "deleteProduct Error", ex);
             throw ex;
         } else {
-            products.remove(product.get());
+            Product p = product.get();
+            products.remove(p);
             logger.info("Product deleted : " + product.get());
+            return p;
         }
     }
 
     /**
-     * TODO : Standard Logging
      * @param updatedProduct Product that need to be updated
      * @throws Exception throws exception if the product is not found
      */
@@ -117,7 +117,6 @@ public class Shop {
     }
 
     /**
-     * TODO : Standard Logging
      * @param fetchId id of the product to be returned
      * @return the product found
      * @throws Exception throws an exception if the product can't be found

@@ -1,10 +1,13 @@
+import control.Menu;
 import logging.LogsFileHandler;
 import models.Product;
+import models.User;
 import repositories.Shop;
 import utilities.Utility;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.logging.*;
 
 public class Main {
@@ -24,7 +27,8 @@ public class Main {
         LOGGER.info("Initializing shop...");
         // Initialisation
         Shop shop = Shop.getInstance();
-        LOGGER.fine("Adding products loop : ");
+        //
+        LOGGER.fine("Adding dummy products loop : ");
         for (int i = 0; i < 5; i++) {
             final Product product = new Product(Utility.generateRandomString(5),
                     Utility.generateRandomPrice(100), new Date());
@@ -32,46 +36,12 @@ public class Main {
             shop.addProduct(product);
         }
         LOGGER.fine("Adding products loop ended.");
-        shop.display();
-        Utility.separator();
-        // Ajout de produit
-        LOGGER.fine("Testing product adding");
-        LOGGER.log(Level.FINE, "[Before] Product list size : " + shop.getProducts().size());
-        shop.addProduct(
-                new Product(
-                        "New Product",
-                        Utility.generateRandomPrice(100),
-                        new Date()
-                )
-        );
-        LOGGER.log(Level.FINE, "[After] Product list size : " + shop.getProducts().size());
-        shop.display();
-        Utility.separator();
-        // Suppression de produit
-        shop.deleteProduct(3);
-        shop.display();
-        Utility.separator();
-        //Update de produit
-        shop.updateProduct(
-                new Product(
-                        4,
-                        "Updated Product",
-                        Utility.generateRandomPrice(),
-                        new Date()
-                )
-        );
-        shop.display();
-        Utility.separator();
-        // Fetch de produit
-        System.out.println(shop.fetchProduct(4));
-        Utility.separator();
-        // Erreur
-        LOGGER.log(Level.FINE, "Try deleting an unknown product...");
-        LOGGER.log(Level.FINE, "[Before] Product list size : " + shop.getProducts().size());
-        shop.deleteProduct(10);
-        LOGGER.log(Level.FINE, "[After] Product list size : " + shop.getProducts().size());
 
-        LOGGER.info("Shop is now closed.");
+        LOGGER.info("Creating Menu");
+        Menu menu = new Menu(new User("Test",18,"test@email.com","salut"));
+        menu.menu();
+        LOGGER.info("End of Program");
     }
+
 
 }
