@@ -16,6 +16,7 @@ public class Main {
             FileHandler mainFileHandler = new FileHandler("logs/main.xml");
             LOGGER.addHandler(fileHandler);
             LOGGER.addHandler(mainFileHandler);
+            LOGGER.setUseParentHandlers(false);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
