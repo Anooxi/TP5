@@ -1,5 +1,6 @@
 package repositories;
 
+import logging.LogsFileHandler;
 import models.Product;
 
 import java.io.IOException;
@@ -14,12 +15,9 @@ public class Shop {
 
     private Shop() {
         Handler fh = null;
-        Handler fhGeneral = null;
+        Handler fhGeneral = LogsFileHandler.getInstance();
         try {
             fh = new FileHandler("logs/shop.xml");
-
-            fhGeneral = new FileHandler("logs/logs.log");
-            fhGeneral.setFormatter(new SimpleFormatter());
         } catch (IOException e) {
             e.printStackTrace();
         }

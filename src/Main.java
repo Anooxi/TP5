@@ -1,3 +1,4 @@
+import logging.LogsFileHandler;
 import models.Product;
 import repositories.Shop;
 import utilities.Utility;
@@ -10,9 +11,8 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws Exception {
+        FileHandler fileHandler = LogsFileHandler.getInstance();
         try {
-            FileHandler fileHandler = new FileHandler("logs/logs.log");
-            fileHandler.setFormatter(new SimpleFormatter());
             FileHandler mainFileHandler = new FileHandler("logs/main.xml");
             LOGGER.addHandler(fileHandler);
             LOGGER.addHandler(mainFileHandler);
