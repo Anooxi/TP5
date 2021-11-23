@@ -1,3 +1,4 @@
 out
 .idea
-tp5er.iml
+*.iml
+logs

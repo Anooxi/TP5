@@ -1,25 +1,42 @@
+import models.Product;
 import repositories.Shop;
-import models.*;
 import utilities.Utility;
 
+import java.io.IOException;
 import java.util.Date;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Main {
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) throws Exception {
+        try {
+            FileHandler fileHandler = new FileHandler("logs/main.log");
+            fileHandler.setFormatter(new SimpleFormatter());
+            LOGGER.addHandler(fileHandler);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        LOGGER.setLevel(Level.FINEST);
+        LOGGER.info("Initializing shop...");
         // Initialisation
         Shop shop = Shop.getInstance();
-        for (int i = 0; i < 5; i++){
-            shop.addProduct(
-                    new Product(
-                            Utility.generateRandomString(5),
-                            Utility.generateRandomPrice(100),
-                            new Date())
-            );
+        LOGGER.fine("Adding products loop : ");
+        for (int i = 0; i < 5; i++) {
+            final Product product = new Product(Utility.generateRandomString(5),
+                    Utility.generateRandomPrice(100), new Date());
+            LOGGER.fine("[Lap " + i + "] Adding product " + product + ".");
+            shop.addProduct(product);
         }
+        LOGGER.fine("Adding products loop ended.");
         shop.display();
         Utility.separator();
         // Ajout de produit
+        LOGGER.fine("Testing product adding");
+        LOGGER.log(Level.FINE, "Product list size : ");
         shop.addProduct(
                 new Product(
                         "New Product",
@@ -49,6 +66,8 @@ public class Main {
         Utility.separator();
         // Erreur
         shop.deleteProduct(10);
+
+        LOGGER.info("Shop is now closed.");
     }
 
 }
