@@ -37,6 +37,18 @@ public class Main {
         }
         LOGGER.fine("Adding products loop ended.");
 
+        LOGGER.info("Adding dummy users");
+        User user1 = new User("User 1",20,"user1@desgenetez.fr","salut");
+        User user2 = new User("User 2",25,"user2@desgenetez.fr","salut");
+        User user3 = new User("User 3",26,"user3@desgenetez.fr","salut");
+        User user4 = new User("User 4",15,"user4@reiter.fr","salut");
+        User user5 = new User("User 5",28,"user5@reiter.fr","salut");
+        User user6 = new User("User 6",45,"user6@reiter.fr","salut");
+        LOGGER.info("Dummy users added.");
+        Menu menuU1 = new Menu(user1);
+
+
+
         LOGGER.info("Creating Menu");
         Menu menu = new Menu(new User("Test",18,"test@email.com","salut"));
         while (menu.getFlag()){

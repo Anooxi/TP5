@@ -16,6 +16,15 @@ public class User {
         this.id = globalId++;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

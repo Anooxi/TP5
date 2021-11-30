@@ -23,4 +23,10 @@ public class Utility {
     public static double generateRandomPrice(){
         return generateRandomPrice(100);
     }
+
+    public static String getMethodName(final int depth)
+    {
+        final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+        return ste[ste.length - 1 - depth].getMethodName();
+    }
 }

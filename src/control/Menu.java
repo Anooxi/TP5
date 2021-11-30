@@ -1,5 +1,6 @@
 package control;
 
+import logging.LPSBuilder;
 import logging.LogsFileHandler;
 import models.Product;
 import models.User;
@@ -35,13 +36,11 @@ public class Menu {
         logger.addHandler(fhGeneral);
         logger.setLevel(Level.FINEST);
         logger.setUseParentHandlers(false);
-        this.scanner  = new Scanner(System.in);
         this.user = user;
-
-        logger.log(Level.INFO,"Menu created",this);
     }
 
     public void menu() throws Exception {
+        this.scanner  = new Scanner(System.in);
         String string = "Enter a number :\n" +
                 "1. displayProduct\n" +
                 "2. fetchProduct\n" +
@@ -77,13 +76,56 @@ public class Menu {
         }
     }
 
+    public void displayProductByCode(){
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.displayProductByCode")
+                .who(this.user)
+                .what("Displaying products");
+
+        logger.info(lpsBuilder.build().toString());
+    }
+
     private void displayProduct(){
-        logger.info("Displaying products");
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.displayProduct")
+                .who(this.user)
+                .what("Displaying products");
+        logger.info(lpsBuilder.build().toString());
+
         shop.display();
     }
 
+    public void fetchProductByCode(int id) throws Exception{
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.fetchProductByCode")
+                .who(this.user)
+                .what("fetching product " + id);
+        logger.info(lpsBuilder.build().toString());
+        int i = -1;
+        try {
+            Utility.separator();
+            System.out.println("Enter an id :");
+            i = scanner.nextInt();
+        } catch (Exception ex){
+            logger.log(Level.SEVERE, "fetchProduct Error : ", ex);
+            ex.printStackTrace();
+            return;
+        }
+        Product p = shop.fetchProduct(i);
+
+        logger.info("Fetch ended with : id = " + i + ", product = " + p);
+    }
+
     private void fetchProduct() throws Exception {
-        logger.info("Fetching a product");
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.fetchProduct")
+                .who(this.user)
+                .what("fetching product");
+        logger.info(lpsBuilder.build().toString());
 
         int i = -1;
         try {
@@ -101,8 +143,33 @@ public class Menu {
         logger.info("Fetch ended with : id = " + i + ", product = " + p);
     }
 
+    public void addProductByCode() throws Exception{
+        logger.info("Adding a product by " + user);
+
+        String name = null;
+        Double price = null;
+
+        try  {
+            Utility.separator();
+            System.out.println("Enter a name :");
+            name = scanner.next();
+            System.out.println("Enter a price :");
+            price = scanner.nextDouble();
+        } catch (Exception ex){
+            logger.log(Level.SEVERE, "addProduct Error : ", ex);
+            ex.printStackTrace();
+            return;
+        }
+
+        Product product = new Product(name,price,new Date());
+        shop.addProduct(product);
+        System.out.println("Product " + product + " added");
+
+        logger.info("Product adding ended with : " + product);
+    }
+
     private void addProduct() throws Exception {
-        logger.info("Adding a product");
+        logger.info("Adding a product by " + user);
 
         String name = null;
         Double price = null;
@@ -127,7 +194,7 @@ public class Menu {
     }
 
     private void deleteProduct() throws Exception {
-        logger.info("Deleting a product");
+        logger.info("Deleting a product by " + user);
 
         int i = -1;
         try {
@@ -146,7 +213,7 @@ public class Menu {
     }
 
     private void updateProduct() throws Exception {
-        logger.info("Updating a product");
+        logger.info("Updating a product by " + user);
 
         int i = -1;
         String name = "";
