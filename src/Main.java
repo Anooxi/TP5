@@ -46,8 +46,28 @@ public class Main {
         User user6 = new User("User 6",45,"user6@reiter.fr","salut");
         LOGGER.info("Dummy users added.");
         Menu menuU1 = new Menu(user1);
+        Menu menuU2 = new Menu(user2);
+        Menu menuU3 = new Menu(user3);
+        Menu menuU4 = new Menu(user4);
+        Menu menuU5 = new Menu(user5);
+        Menu menuU6 = new Menu(user6);
 
+        menuU1.displayProductByCode();
+        menuU1.addProductByCode(new Product("U1-1",30.2,new Date()));
+        menuU1.addProductByCode(new Product("U1-2",200.5,new Date()));
+        menuU1.addProductByCode(new Product("U1-3",10.0,new Date()));
+        menuU1.addProductByCode(new Product("U1-4",88.9,new Date()));
+        menuU1.addProductByCode(new Product("U1-5",22.9,new Date()));
+        menuU1.displayProductByCode();
 
+        menuU2.displayProductByCode();
+        menuU2.fetchProductByCode(3);
+        menuU2.fetchProductByCode(2);
+        menuU2.fetchProductByCode(1);
+        menuU2.fetchProductByCode(5);
+        menuU2.fetchProductByCode(3);
+        menuU2.fetchProductByCode(4);
+        menuU2.displayProductByCode();
 
         LOGGER.info("Creating Menu");
         Menu menu = new Menu(new User("Test",18,"test@email.com","salut"));

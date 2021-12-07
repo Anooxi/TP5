@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Menu {
-    private static final Logger logger = Logger.getLogger(Menu.class.getName());
+    private final Logger logger = Logger.getLogger(Menu.class.getName());
     private final User user;
     private Shop shop = Shop.getInstance();
     private Scanner scanner;
@@ -28,14 +28,13 @@ public class Menu {
         Handler fh = null;
         Handler fhGeneral = LogsFileHandler.getInstance();
         try {
-            fh = new FileHandler("logs/menu.xml");
+            fh = new FileHandler("logs/menu_"+ user.getName() +".xml");
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.addHandler(fh);
         logger.addHandler(fhGeneral);
         logger.setLevel(Level.FINEST);
-        logger.setUseParentHandlers(false);
         this.user = user;
     }
 
@@ -97,26 +96,25 @@ public class Menu {
         shop.display();
     }
 
-    public void fetchProductByCode(int id) throws Exception{
+    public Product fetchProductByCode(int id) throws Exception{
         LPSBuilder lpsBuilder = new LPSBuilder()
                 .when(new Date().toString())
                 .where("menu.fetchProductByCode")
                 .who(this.user)
                 .what("fetching product " + id);
         logger.info(lpsBuilder.build().toString());
-        int i = -1;
+        Product p;
         try {
-            Utility.separator();
-            System.out.println("Enter an id :");
-            i = scanner.nextInt();
+            p = shop.fetchProduct(id);
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "fetchProduct Error : ", ex);
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("fetch Product By Code " + id + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
             ex.printStackTrace();
-            return;
+            return null;
         }
-        Product p = shop.fetchProduct(i);
-
-        logger.info("Fetch ended with : id = " + i + ", product = " + p);
+        return p;
     }
 
     private void fetchProduct() throws Exception {
@@ -133,43 +131,40 @@ public class Menu {
             System.out.println("Enter an id :");
             i = scanner.nextInt();
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "fetchProduct Error : ", ex);
+            lpsBuilder.when(new Date().toString()).what("fetch Product " + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
             ex.printStackTrace();
             return;
         }
         Product p = shop.fetchProduct(i);
         System.out.println(p);
-
-        logger.info("Fetch ended with : id = " + i + ", product = " + p);
     }
 
-    public void addProductByCode() throws Exception{
-        logger.info("Adding a product by " + user);
+    public void addProductByCode(Product newProduct) throws Exception{
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.addProductByCode")
+                .who(this.user)
+                .what("adding product by code : " + newProduct);
+        logger.info(lpsBuilder.build().toString());
 
-        String name = null;
-        Double price = null;
-
-        try  {
-            Utility.separator();
-            System.out.println("Enter a name :");
-            name = scanner.next();
-            System.out.println("Enter a price :");
-            price = scanner.nextDouble();
+        try {
+            shop.addProduct(newProduct);
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "addProduct Error : ", ex);
-            ex.printStackTrace();
-            return;
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("add Product By Code" + newProduct + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
         }
-
-        Product product = new Product(name,price,new Date());
-        shop.addProduct(product);
-        System.out.println("Product " + product + " added");
-
-        logger.info("Product adding ended with : " + product);
     }
 
     private void addProduct() throws Exception {
-        logger.info("Adding a product by " + user);
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.addProduct")
+                .who(this.user)
+                .what("adding product");
+        logger.info(lpsBuilder.build().toString());
 
         String name = null;
         Double price = null;
@@ -181,7 +176,10 @@ public class Menu {
             System.out.println("Enter a price :");
             price = scanner.nextDouble();
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "addProduct Error : ", ex);
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("add Product" + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
             ex.printStackTrace();
             return;
         }
@@ -189,12 +187,34 @@ public class Menu {
         Product product = new Product(name,price,new Date());
         shop.addProduct(product);
         System.out.println("Product " + product + " added");
+    }
 
-        logger.info("Product adding ended with : " + product);
+    public void deleteProductByCode(int id) throws Exception {
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.deleteProductByCode")
+                .who(this.user)
+                .what("delete product by code : " + id);
+        logger.info(lpsBuilder.build().toString());
+
+        try {
+            shop.deleteProduct(id);
+        } catch (Exception ex){
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("delete Product" + id + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
+        }
+
     }
 
     private void deleteProduct() throws Exception {
-        logger.info("Deleting a product by " + user);
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.deleteProduct")
+                .who(this.user)
+                .what("delete product");
+        logger.info(lpsBuilder.build().toString());
 
         int i = -1;
         try {
@@ -202,18 +222,36 @@ public class Menu {
             System.out.println("Enter an id :");
             i = scanner.nextInt();
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "deleteProduct Error : ", ex);
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("delete Product" + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
             ex.printStackTrace();
             return;
         }
         Product p = shop.deleteProduct(i);
         System.out.println("Product deleted");
+    }
 
-        logger.info("Product deleting ended with : id = " + i + ", product = " + p);
+    public void updateProductByCode(Product updatedProduct) throws Exception{
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.updateProductByCode")
+                .who(this.user)
+                .what("update product by code " + updatedProduct);
+        logger.info(lpsBuilder.build().toString());
+
+        shop.updateProduct(updatedProduct);
+
     }
 
     private void updateProduct() throws Exception {
-        logger.info("Updating a product by " + user);
+        LPSBuilder lpsBuilder = new LPSBuilder()
+                .when(new Date().toString())
+                .where("menu.updateProduct")
+                .who(this.user)
+                .what("update product");
+        logger.info(lpsBuilder.build().toString());
 
         int i = -1;
         String name = "";
@@ -227,7 +265,10 @@ public class Menu {
             System.out.println("Enter a price :");
             price = scanner.nextDouble();
         } catch (Exception ex){
-            logger.log(Level.SEVERE, "updateProduct Error : ", ex);
+            lpsBuilder
+                    .when(new Date().toString())
+                    .what("update Product" + " error : " + ex);
+            logger.severe(lpsBuilder.build().toString());
             ex.printStackTrace();
             return;
         }
@@ -235,7 +276,5 @@ public class Menu {
         Product product = new Product(i,name,price,new Date());
         shop.updateProduct(product);
         System.out.println("Product " + product + " added");
-
-        logger.info("Product updated ended with : " + product);
     }
 }
