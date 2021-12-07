@@ -3,6 +3,7 @@ package logging;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
+import java.util.logging.XMLFormatter;
 
 public class LogsFileHandler extends FileHandler {
     private static LogsFileHandler INSTANCE;
@@ -10,14 +11,14 @@ public class LogsFileHandler extends FileHandler {
     static {
         try {
             INSTANCE = new LogsFileHandler();
-            INSTANCE.setFormatter(new SimpleFormatter());
+            INSTANCE.setFormatter(new XMLFormatter());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private LogsFileHandler() throws IOException, SecurityException {
-        super("logs/logs.log");
+        super("logs/logs.xml");
     }
 
     public static LogsFileHandler getInstance() {

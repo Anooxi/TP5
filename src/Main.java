@@ -7,7 +7,6 @@ import utilities.Utility;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.logging.*;
 
 public class Main {
@@ -26,7 +25,7 @@ public class Main {
         LOGGER.setLevel(Level.FINEST);
         LOGGER.info("Initializing shop...");
         // Initialisation
-        Shop shop = Shop.getInstance();
+        Shop shop = new Shop();
         //
         LOGGER.fine("Adding dummy products loop : ");
         for (int i = 0; i < 5; i++) {
@@ -45,12 +44,12 @@ public class Main {
         User user5 = new User("User 5",28,"user5@reiter.fr","salut");
         User user6 = new User("User 6",45,"user6@reiter.fr","salut");
         LOGGER.info("Dummy users added.");
-        Menu menuU1 = new Menu(user1);
-        Menu menuU2 = new Menu(user2);
-        Menu menuU3 = new Menu(user3);
-        Menu menuU4 = new Menu(user4);
-        Menu menuU5 = new Menu(user5);
-        Menu menuU6 = new Menu(user6);
+        Menu menuU1 = new Menu(user1,shop);
+        Menu menuU2 = new Menu(user2,shop);
+        Menu menuU3 = new Menu(user3,shop);
+        Menu menuU4 = new Menu(user4,shop);
+        Menu menuU5 = new Menu(user5,shop);
+        Menu menuU6 = new Menu(user6,shop);
 
         menuU1.displayProductByCode();
         menuU1.addProductByCode(new Product("U1-1",30.2,new Date()));
@@ -70,7 +69,7 @@ public class Main {
         menuU2.displayProductByCode();
 
         LOGGER.info("Creating Menu");
-        Menu menu = new Menu(new User("Test",18,"test@email.com","salut"));
+        Menu menu = new Menu(new User("Test",18,"test@email.com","salut"),shop);
         while (menu.getFlag()){
             menu.menu();
         }

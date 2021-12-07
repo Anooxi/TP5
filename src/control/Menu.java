@@ -16,26 +16,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Menu {
-    private final Logger logger = Logger.getLogger(Menu.class.getName());
+    private Logger logger;
     private final User user;
-    private Shop shop = Shop.getInstance();
+    private Shop shop;
     private Scanner scanner;
     private boolean flag = true;
 
     public boolean getFlag(){return flag;}
 
-    public Menu(User user){
+    public Menu(User user, Shop shop){
+        this.user = user;
+        this.shop = shop;
+        logger = Logger.getLogger(Menu.class.getName() + "_" + user.getName());
         Handler fh = null;
         Handler fhGeneral = LogsFileHandler.getInstance();
         try {
-            fh = new FileHandler("logs/menu_"+ user.getName() +".xml");
+            fh = new FileHandler("logs/menu_"+ user.getName() + ".xml");
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.addHandler(fh);
         logger.addHandler(fhGeneral);
         logger.setLevel(Level.FINEST);
-        this.user = user;
+        logger.setUseParentHandlers(false);
+
     }
 
     public void menu() throws Exception {

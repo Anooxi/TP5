@@ -11,9 +11,8 @@ import java.util.logging.*;
 public class Shop {
     private static final Logger logger = Logger.getLogger(Shop.class.getName());
     private ArrayList<Product> products;
-    private static Shop instance = new Shop();
 
-    private Shop() {
+    public Shop() {
         Handler fh = null;
         Handler fhGeneral = LogsFileHandler.getInstance();
         try {
@@ -37,10 +36,6 @@ public class Shop {
      */
     public ArrayList<Product> getProducts() {
         return products;
-    }
-
-    public static Shop getInstance() {
-        return instance;
     }
 
     /**
