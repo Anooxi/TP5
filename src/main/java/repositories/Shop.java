@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.logging.*;
 
 public class Shop {
-    private static final Logger logger = Logger.getLogger(Shop.class.getName());
+//    private static final Logger logger = Logger.getLogger(Shop.class.getName());
     private ArrayList<Product> products;
 
     public Shop() {
@@ -20,14 +20,14 @@ public class Shop {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.addHandler(fh);
-        logger.addHandler(fhGeneral);
-        logger.setLevel(Level.FINEST);
-        logger.setUseParentHandlers(false);
+//        logger.addHandler(fh);
+//        logger.addHandler(fhGeneral);
+//        logger.setLevel(Level.FINEST);
+//        logger.setUseParentHandlers(false);
 
         products = new ArrayList<>();
 
-        logger.info("Shop created");
+//        logger.info("Shop created");
     }
 
     /**
@@ -45,7 +45,7 @@ public class Shop {
         for (Product p : products) {
             System.out.println(p);
         }
-        logger.info("Shop displayed");
+//        logger.info("Shop displayed");
     }
 
     @Override
@@ -63,11 +63,11 @@ public class Shop {
                 .findAny();
         if(product.isPresent()){
             Exception ex = new Exception("Product : " + newProduct + " already exists in the Shop");
-            logger.log(Level.SEVERE, "addProduct Error", ex);
+//            logger.log(Level.SEVERE, "addProduct Error", ex);
             throw ex;
         } else {
             this.products.add(newProduct);
-            logger.info("Product added : " + newProduct);
+//            logger.info("Product added : " + newProduct);
         }
     }
 
@@ -81,12 +81,12 @@ public class Shop {
                 .findAny();
         if(product.isEmpty()){
             Exception ex = new Exception("Product with id : " + deleteId + " does not exists in the Shop");
-            logger.log(Level.SEVERE, "deleteProduct Error", ex);
+//            logger.log(Level.SEVERE, "deleteProduct Error", ex);
             throw ex;
         } else {
             Product p = product.get();
             products.remove(p);
-            logger.info("Product deleted : " + product.get());
+//            logger.info("Product deleted : " + product.get());
             return p;
         }
     }
@@ -101,13 +101,13 @@ public class Shop {
                 .findAny();
         if(product.isEmpty()){
             Exception ex = new Exception("Product : " + updatedProduct + " does not exists in the Shop");
-            logger.log(Level.SEVERE, "updateProduct Error", ex);
+//            logger.log(Level.SEVERE, "updateProduct Error", ex);
             throw ex;
         } else {
             // On peut juste modifier le Product dans l'ArrayList mais la sa peut créer des opportunités pour les logs
             deleteProduct(updatedProduct.getId());
             addProduct(updatedProduct);
-            logger.info("Product updated : " + updatedProduct);
+//            logger.info("Product updated : " + updatedProduct);
         }
     }
 
@@ -121,11 +121,11 @@ public class Shop {
                 .filter(p -> p.getId() == fetchId)
                 .findAny();
         if(product.isPresent()){
-            logger.info("Product fetched : " + product.get());
+//            logger.info("Product fetched : " + product.get());
             return product.get();
         } else {
             Exception ex = new Exception("Cannot fetch product with id : " + fetchId);
-            logger.log(Level.SEVERE, "updateProduct Error", ex);
+//            logger.log(Level.SEVERE, "updateProduct Error", ex);
             throw ex;
         }
     }

@@ -1,5 +1,6 @@
 package logging;
 
+
 import models.User;
 
 public class LogPrintingStatement {

@@ -2,7 +2,6 @@ package logging;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
 public class LogsFileHandler extends FileHandler {
